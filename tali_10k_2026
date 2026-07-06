@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tali — Nike Melbourne Marathon 10k 2026</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff; --bg-secondary: #f7f7f5; --bg-tertiary: #f0efeb;
+    --text-primary: #1a1a18; --text-secondary: #6b6b63; --text-tertiary: #9a9a92;
+    --border: rgba(0,0,0,0.12); --border-mid: rgba(0,0,0,0.18);
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #0F6E56;
+    --blue-light: #E6F1FB; --blue-dark: #185FA5; --blue-mid: #0C447C;
+    --amber-light: #FAEEDA; --amber-dark: #854F0B;
+    --coral-light: #FAECE7; --coral-dark: #993C1D;
+    --purple-light: #EEEDFE; --purple-dark: #3C3489;
+    --green-light: #EAF3DE; --green-dark: #27500A;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a; --bg-secondary: #252523; --bg-tertiary: #2e2e2b;
+      --text-primary: #f0efea; --text-secondary: #a0a098; --text-tertiary: #6b6b63;
+      --border: rgba(255,255,255,0.10); --border-mid: rgba(255,255,255,0.16);
+      --teal-light: #085041; --teal-dark: #9FE1CB;
+      --blue-light: #0C447C; --blue-dark: #B5D4F4; --blue-mid: #B5D4F4;
+      --amber-light: #633806; --amber-dark: #FAC775;
+      --coral-light: #712B13; --coral-dark: #F5C4B3;
+      --purple-light: #3C3489; --purple-dark: #CECBF6;
+      --green-light: #27500A; --green-dark: #C0DD97;
+    }
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); line-height: 1.5; padding: 1.5rem 1rem; min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Hero */
+  .hero { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1.25rem; flex-wrap: wrap; }
+  .avatar { width: 60px; height: 60px; border-radius: 50%; background: #E05A2B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 600; flex-shrink: 0; }
+  .hero-title { font-size: 22px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+  .hero-sub { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+  .badge-teal { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-blue { background: var(--blue-light); color: var(--blue-dark); }
+  .badge-amber { background: var(--amber-light); color: var(--amber-dark); }
+  .badge-coral { background: var(--coral-light); color: var(--coral-dark); }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .stat { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.25rem; }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .stat-val { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+  .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .tab { padding: 7px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 0.5px solid var(--border-mid); background: transparent; color: var(--text-secondary); transition: all 0.15s; font-family: inherit; }
+  .tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .tab.active { background: #E05A2B; border-color: #E05A2B; color: #fff; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Shared */
+  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+  .section-title { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
+
+  /* Philosophy */
+  .phil-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .phil-item { display: flex; gap: 12px; align-items: flex-start; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+  .phil-icon { font-size: 20px; flex-shrink: 0; line-height: 1; }
+  .phil-text strong { font-size: 13px; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 3px; }
+  .phil-text span { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Week struct */
+  .week-struct { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .week-struct th { padding: 8px; background: var(--bg-secondary); font-size: 11px; font-weight: 600; color: var(--text-secondary); border: 0.5px solid var(--border); text-align: center; }
+  .week-struct td { padding: 8px; border: 0.5px solid var(--border); text-align: center; vertical-align: top; font-size: 12px; }
+
+  /* Pace */
+  .pace-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem; }
+  .pace-type { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .pace-num { font-size: 24px; font-weight: 600; color: var(--text-primary); }
+  .pace-unit { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
+  .pace-bar { height: 3px; border-radius: 2px; margin: 8px 0; }
+  .pace-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Phase */
+  .phase-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .phase-tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
+  .tag-f { background: var(--teal-light); color: var(--teal-dark); }
+  .tag-b { background: var(--blue-light); color: var(--blue-dark); }
+  .tag-t { background: var(--coral-light); color: var(--coral-dark); }
+  .phase-name { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+  .phase-dates { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+  .phase-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+  .phase-goals { border-top: 0.5px solid var(--border); padding-top: 10px; list-style: none; }
+  .phase-goals li { font-size: 12px; color: var(--text-secondary); padding: 2px 0 2px 16px; position: relative; line-height: 1.5; }
+  .phase-goals li::before { content: '→'; position: absolute; left: 0; color: #E05A2B; }
+
+  /* Schedule table */
+  .sched-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sched { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 820px; }
+  .sched th { padding: 8px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-secondary); background: var(--bg-secondary); border-bottom: 0.5px solid var(--border); white-space: nowrap; }
+  .sched td { padding: 8px; vertical-align: top; border-bottom: 0.5px solid var(--border); line-height: 1.4; color: var(--text-primary); }
+  .sched tr:hover td { filter: brightness(0.97); }
+  .week-cell { font-weight: 600; white-space: nowrap; font-size: 12px; }
+  .week-date { font-size: 10px; color: var(--text-secondary); font-weight: 400; }
+  .km-cell { font-size: 11px; color: var(--text-secondary); white-space: nowrap; font-weight: 600; }
+
+  /* Cell colours — identical to Tegan's plan */
+  .cr { background: var(--bg-secondary); color: var(--text-secondary); font-style: italic; }
+  .ch { background: var(--blue-light); color: var(--blue-mid); }
+  .ce { background: var(--green-light); color: var(--green-dark); }
+  .cq { background: var(--amber-light); color: var(--amber-dark); }
+  .cl { background: var(--coral-light); color: var(--coral-dark); }
+  .cs { background: var(--purple-light); color: var(--purple-dark); }
+  .cx { background: #E05A2B; color: #fff; font-weight: 600; }
+
+  .phase-row td { background: var(--bg-tertiary); font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 8px; border-bottom: 0.5px solid var(--border); }
+
+  /* Legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+  .leg-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* Fixture table */
+  .ftable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ftable th { padding: 8px 10px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-secondary); background: var(--bg-secondary); border-bottom: 0.5px solid var(--border); white-space: nowrap; }
+  .ftable td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); color: var(--text-primary); font-size: 13px; }
+  .ftable tr:last-child td { border-bottom: none; }
+  .ftable tr:hover td { background: var(--bg-secondary); }
+  .pill-sat { background: var(--blue-light); color: var(--blue-mid); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .pill-sun { background: var(--amber-light); color: var(--amber-dark); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .pill-bye { background: var(--bg-secondary); color: var(--text-tertiary); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .pill-fin { background: var(--coral-light); color: var(--coral-dark); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .imp-note { font-size: 12px; color: var(--amber-dark); font-style: italic; }
+
+  /* Strength */
+  .scard { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem; }
+  .s-cat { font-size: 12px; font-weight: 600; color: var(--purple-dark); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+  .scard ul { list-style: none; padding: 0; }
+  .scard li { font-size: 12px; color: var(--text-secondary); padding: 3px 0 3px 14px; position: relative; line-height: 1.4; }
+  .scard li::before { content: '·'; position: absolute; left: 3px; color: #E05A2B; font-size: 16px; line-height: 1; top: 2px; }
+
+  /* Notes */
+  .note-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .note-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .note-card-title .dot { width: 8px; height: 8px; border-radius: 50%; background: #E05A2B; flex-shrink: 0; }
+  .note-card p, .note-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .note-card ul { padding-left: 16px; }
+  .note-card li { padding: 2px 0; }
+  .note-section { margin-bottom: 1.5rem; }
+  .note-section-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid var(--border); }
+
+  /* Boxes */
+  .highlight-box { background: var(--teal-light); border: 0.5px solid var(--teal); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-top: 1rem; }
+  .highlight-box p { font-size: 13px; color: var(--teal-dark); line-height: 1.6; }
+  .warning-box { background: var(--amber-light); border: 0.5px solid #EF9F27; border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-top: 1rem; }
+  .warning-box p { font-size: 13px; color: var(--amber-dark); line-height: 1.6; }
+  strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="avatar">T</div>
+    <div style="flex:1;min-width:200px;">
+      <div class="hero-title">Tali — Nike Melbourne Marathon 10k 2026</div>
+      <div class="hero-sub">19-week training plan · 1 June → 11 October 2026 · HV Womens Premier League Reserves — Hawthorn</div>
+      <div class="badges">
+        <span class="badge badge-teal">Goal: sub 40:00</span>
+        <span class="badge badge-blue">Current est: 42:30</span>
+        <span class="badge badge-amber">HV WPL Reserves — Hawthorn</span>
+        <span class="badge badge-coral">2→3 runs + 1 strength / week</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Race date</div><div class="stat-val">11 Oct 2026</div><div class="stat-sub">Nike Melbourne Marathon 10k</div></div>
+    <div class="stat"><div class="stat-label">Training weeks</div><div class="stat-val">19 weeks</div><div class="stat-sub">1 Jun → race day</div></div>
+    <div class="stat"><div class="stat-label">Goal time</div><div class="stat-val">Sub 40:00</div><div class="stat-sub">4:00/km target pace</div></div>
+    <div class="stat"><div class="stat-label">Current est.</div><div class="stat-val">42:30</div><div class="stat-sub">~4:15/km</div></div>
+    <div class="stat"><div class="stat-label">Time to find</div><div class="stat-val">2:30</div><div class="stat-sub">~15 sec/km improvement</div></div>
+    <div class="stat"><div class="stat-label">3rd run added</div><div class="stat-val">Wk 10</div><div class="stat-sub">From Mon 3 Aug</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('philosophy',this)">Philosophy</button>
+    <button class="tab" onclick="showTab('paces',this)">Training paces</button>
+    <button class="tab" onclick="showTab('phases',this)">Phases</button>
+    <button class="tab" onclick="showTab('schedule',this)">Full schedule</button>
+    <button class="tab" onclick="showTab('fixtures',this)">Hockey fixtures</button>
+    <button class="tab" onclick="showTab('strength',this)">Strength</button>
+    <button class="tab" onclick="showTab('notes',this)">Anna's notes</button>
+  </div>
+
+  <!-- ===================== PHILOSOPHY ===================== -->
+  <div id="tab-philosophy" class="panel active">
+    <div class="section-title">Training philosophy</div>
+    <div class="phil-grid" style="margin-bottom:1.5rem;">
+      <div class="phil-item"><div class="phil-icon">🎯</div><div class="phil-text"><strong>One race, one mission</strong><span>Everything in this plan is built around running 10 km at 4:00/km or faster. Short, sharp, and specific — 10k training is high-quality over high-volume.</span></div></div>
+      <div class="phil-item"><div class="phil-icon">📈</div><div class="phil-text"><strong>Build the base first</strong><span>Weeks 1–9 use just 2 runs per week to establish the aerobic foundation without burning out. Consistency across 9 weeks beats big early weeks that lead to injury.</span></div></div>
+      <div class="phil-item"><div class="phil-icon">🏑</div><div class="phil-text"><strong>Hockey is conditioning</strong><span>Tuesday and Thursday training plus Saturday matches deliver interval-quality cardio, agility, and competitiveness. This is meaningful cross-training — not a compromise.</span></div></div>
+      <div class="phil-item"><div class="phil-icon">⚡</div><div class="phil-text"><strong>Quality over quantity</strong><span>With a limited running schedule, every session must earn its place. The long run builds endurance; the Wednesday quality session builds the speed to run sub-4:00/km.</span></div></div>
+      <div class="phil-item"><div class="phil-icon">🔁</div><div class="phil-text"><strong>Progressive overload</strong><span>Mileage and intensity increase gradually. A third run is added at week 10 — 8 weeks out — when the aerobic base is ready to absorb more stimulus before taper.</span></div></div>
+      <div class="phil-item"><div class="phil-icon">🛡️</div><div class="phil-text"><strong>Arrive healthy</strong><span>A 2:30 improvement over 19 weeks is very achievable. The plan is designed to get there without breaking down — smart progression and one strength session per week.</span></div></div>
+    </div>
+    <hr>
+    <div class="section-title">Weekly structure</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem;"><strong>Phase 1 (Weeks 1–9):</strong> 2 runs per week — Monday long run + Wednesday strength & easy run. <strong>Phase 2 (Weeks 10–16):</strong> 3 runs — Friday easy run added. <strong>Taper (Weeks 17–19):</strong> volume reduces, sharpness maintained.</p>
+    <div style="overflow-x:auto;margin-bottom:1rem;">
+      <table class="week-struct">
+        <thead><tr><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cl">Long run<br><small>Key session</small></td>
+            <td class="ch">Hockey training</td>
+            <td class="cs">Strength 40 min<br><small>Ph 1 — no run</small></td>
+            <td class="ch">Hockey training</td>
+            <td class="ce">Easy run<br><small>Run club</small></td>
+            <td class="ch">Hockey match</td>
+            <td class="cr" style="font-style:italic;">Rest</td>
+          </tr>
+          <tr>
+            <td class="cl">Long run<br><small>Key session</small></td>
+            <td class="ch">Hockey training</td>
+            <td class="cq">Quality run<br><small>Ph 2+</small></td>
+            <td class="ch">Hockey training</td>
+            <td class="ce">Easy run<br><small>Ph 2 added</small></td>
+            <td class="ch">Hockey match</td>
+            <td class="cr" style="font-style:italic;">Rest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight-box"><p><strong>Week 6 note (Sun 12 Jul — Sunday away game at Doncaster):</strong> The Monday long run falls the day after a Sunday match. That week, the long run shifts to Wednesday and strength moves to Friday. Friday's run club easy run is skipped that week — legs need the day after the Sunday match to recover.</p></div>
+  </div>
+
+  <!-- ===================== PACES ===================== -->
+  <div id="tab-paces" class="panel">
+    <div class="section-title">Training pace guide</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1.25rem;">Based on a sub-40:00 goal (4:00/km) and a current estimated time of 42:30 (~4:15/km). The gap to close is 15 seconds per kilometre — very achievable with consistent 10k-specific training over 19 weeks.</p>
+    <div class="grid-auto" style="margin-bottom:1.5rem;">
+      <div class="pace-card"><div class="pace-type">Easy / recovery</div><div class="pace-num">5:00–5:30 <span class="pace-unit">/km</span></div><div class="pace-bar" style="background:#9FE1CB;width:25%;"></div><div class="pace-desc">Fully conversational. Z1–Z2 (under 152 bpm). Used on Friday run club sessions and warm-ups. Never skip easy runs — they build the aerobic base that makes fast running possible.</div></div>
+      <div class="pace-card"><div class="pace-type">Long run</div><div class="pace-num">4:50–5:15 <span class="pace-unit">/km</span></div><div class="pace-bar" style="background:#63C490;width:38%;"></div><div class="pace-desc">Comfortable and controlled. Z2 (123–152 bpm). Monday sessions. Builds endurance base and time on feet. Longer than race distance to build durability.</div></div>
+      <div class="pace-card"><div class="pace-type">Race pace (RP)</div><div class="pace-num">3:58–4:02 <span class="pace-unit">/km</span></div><div class="pace-bar" style="background:#FAC775;width:62%;"></div><div class="pace-desc">Goal 10k effort. Hard but sustainable. Z4 (168–182 bpm). Introduced in quality sessions from week 10. This pace should feel controlled and rehearsed by race day.</div></div>
+      <div class="pace-card"><div class="pace-type">Tempo / threshold</div><div class="pace-num">4:10–4:20 <span class="pace-unit">/km</span></div><div class="pace-bar" style="background:#EF9F27;width:72%;"></div><div class="pace-desc">Comfortably hard. Short sentences. Z3–Z4 (153–175 bpm). Used in Wednesday quality sessions — sustained tempo runs and cruise intervals. Raises the lactate threshold, which is the key to running faster for longer.</div></div>
+      <div class="pace-card"><div class="pace-type">5k / speed intervals</div><div class="pace-num">3:45–3:55 <span class="pace-unit">/km</span></div><div class="pace-bar" style="background:#D85A30;width:88%;"></div><div class="pace-desc">Hard. One-word answers. Z4–Z5 (178–183+ bpm). Short reps only (400–800m). Used sparingly in peak phase to sharpen top-end speed. Hockey provides some of this naturally.</div></div>
+      <div class="pace-card"><div class="pace-type">Hockey training equiv.</div><div class="pace-num">Tempo–interval</div><div class="pace-bar" style="background:#B5D4F4;width:60%;"></div><div class="pace-desc">Sprints, press, and drills count as quality work. On weeks when hockey is very intense, dial back Wednesday quality to a steady easy run instead.</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== PHASES ===================== -->
+  <div id="tab-phases" class="panel">
+    <div class="section-title">Training phases</div>
+    <div class="grid-2" style="margin-bottom:1rem;">
+      <div class="phase-card">
+        <span class="phase-tag tag-f">Phase 1 — Base</span>
+        <div class="phase-name">Aerobic Foundation</div>
+        <div class="phase-dates">1 June – 2 August · Weeks 1–9</div>
+        <div class="phase-desc">Two runs per week — a Monday long run and a Friday easy run at run club. Wednesday is strength only. The goal is to build a consistent aerobic platform without over-stressing the body alongside hockey. Long runs begin at 6 km and progress gradually to 10 km. Friday runs are relaxed, social, and easy effort — the perfect complement to Monday's key session. Hockey training and Saturday matches provide supplementary conditioning throughout.</div>
+        <ul class="phase-goals">
+          <li>Establish consistent 2-run weekly habit</li>
+          <li>Long run builds from 6 km to 10 km</li>
+          <li>Wednesday: strength only (no run)</li>
+          <li>Friday: run club easy run (4–5 km)</li>
+          <li>Weekly running volume: 10–18 km</li>
+          <li>Cutback weeks at weeks 4 and 7</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <span class="phase-tag tag-b">Phase 2 — Build</span>
+        <div class="phase-name">10k Specific Training</div>
+        <div class="phase-dates">3 August – 14 September · Weeks 10–16</div>
+        <div class="phase-desc">A third run is introduced on Fridays — a short, easy recovery run of 4–5 km. Wednesday sessions shift from easy runs to structured quality work: tempo runs, cruise intervals, and race-pace efforts. Long runs stay on Monday, extending to 12 km and incorporating some race-pace segments. Hockey finals (late Aug–mid Sep) overlay the back half of this phase — running quality is managed accordingly.</div>
+        <ul class="phase-goals">
+          <li>Add Friday easy run (3rd run per week)</li>
+          <li>Introduce Wednesday quality sessions</li>
+          <li>Long run extends to 12 km with race-pace segments</li>
+          <li>Race-pace efforts introduced from week 12</li>
+          <li>Reduce load during hockey finals (weeks 13–15)</li>
+          <li>Weekly running volume: 18–28 km</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="grid-column: span 1;">
+        <span class="phase-tag tag-t">Phase 3 — Taper</span>
+        <div class="phase-name">Sharpen & Race</div>
+        <div class="phase-dates">15 September – 11 October · Weeks 17–19</div>
+        <div class="phase-desc">3-week taper. Hockey season is over after the grand final (~12 Sep). Volume reduces but sharpness is maintained through short race-pace efforts. The body consolidates all training adaptations. The legs should feel light and fast heading into race week. Trust everything that has been built over 19 weeks.</div>
+        <ul class="phase-goals">
+          <li>Volume reduces ~30% then ~50% from peak</li>
+          <li>Short race-pace sharpeners maintain turnover</li>
+          <li>Dial in race-day nutrition and warm-up routine</li>
+          <li>Rest, sleep, and confidence in the training</li>
+          <li>Race week: ~8 km total + 10k race</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">🏒 Hockey finals — weeks 13–15 (est. 29 Aug, 5 Sep, 12 Sep)</div><p style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Finals are expected to be Saturdays (TBC). During finals weeks, Wednesday quality sessions are scaled back to easy efforts and Friday runs are kept short. The finals matches themselves are high-intensity conditioning — treat them as quality sessions. After the grand final (~12 Sep), hockey is done. Weeks 17–19 are pure taper with full focus on the 10k.</p></div>
+  </div>
+
+  <!-- ===================== SCHEDULE ===================== -->
+  <div id="tab-schedule" class="panel">
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--blue-light);border:1px solid #B5D4F4;"></div>Hockey</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--green-light);border:1px solid #C0DD97;"></div>Easy run</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--amber-light);border:1px solid #FAC775;"></div>Quality run</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--coral-light);border:1px solid #F5C4B3;"></div>Long run</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--purple-light);border:1px solid #CECBF6;"></div>Strength</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--bg-secondary);border:1px solid var(--border);"></div>Rest</div>
+      <div class="leg"><div class="leg-dot" style="background:#E05A2B;"></div>Race day</div>
+    </div>
+    <div class="sched-outer">
+      <table class="sched">
+        <thead>
+          <tr>
+            <th style="min-width:80px;">Week</th>
+            <th style="min-width:145px;">Monday</th>
+            <th style="min-width:110px;">Tuesday</th>
+            <th style="min-width:155px;">Wednesday</th>
+            <th style="min-width:110px;">Thursday</th>
+            <th style="min-width:120px;">Friday</th>
+            <th style="min-width:145px;">Saturday</th>
+            <th style="min-width:100px;">Sunday</th>
+            <th style="min-width:55px;">~km</th>
+          </tr>
+        </thead>
+        <tbody id="schedBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== FIXTURES ===================== -->
+  <div id="tab-fixtures" class="panel">
+    <div class="section-title">Hawthorn — HV Womens Premier League Reserves 2026</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem;">Fixtures sourced from Hockey Victoria. Training starts 1 June. All games during the training block are on Saturday except <strong>Round 12 at Doncaster on Sunday 12 July (Week 6)</strong>. Because Monday is long run day, running a long effort the morning after a Sunday away game is not ideal — that week the long run shifts to Wednesday and strength moves to Friday. Weeks 4 and 8 are bye weeks.</p>
+    <div style="overflow-x:auto;">
+      <table class="ftable">
+        <thead>
+          <tr><th>Training week</th><th>Round</th><th>Date & time</th><th>Fixture</th><th>Venue</th><th>Day</th><th>Plan impact</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Week 1</strong><br><small style="color:var(--text-secondary);">1–7 Jun</small></td>
+            <td>—</td><td>—</td>
+            <td style="color:var(--text-tertiary);font-style:italic;">No match this week</td><td>—</td>
+            <td><span class="pill-bye">Bye</span></td>
+            <td style="font-size:12px;">Standard — long run Monday ✓</td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 2</strong><br><small style="color:var(--text-secondary);">8–14 Jun</small></td>
+            <td>Rd 9</td><td>Sat 13 Jun, 14:00</td>
+            <td><strong>Hawthorn</strong> vs MCC (home)</td><td>Hawthorn Malvern HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 8 Jun ✓</td>
+          </tr>
+          <tr>
+            <td><strong>Week 3</strong><br><small style="color:var(--text-secondary);">15–21 Jun</small></td>
+            <td>Rd 10</td><td>Sat 20 Jun, 17:00</td>
+            <td>Greensborough vs <strong>Hawthorn</strong> (away)</td><td>Greensborough HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 15 Jun ✓</td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 4</strong><br><small style="color:var(--text-secondary);">22–28 Jun</small></td>
+            <td>Rd 11</td><td>Sat 27 Jun, 17:00</td>
+            <td><strong>Hawthorn</strong> vs Mentone (home)</td><td>Hawthorn Malvern HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 22 Jun ✓<br><span class="imp-note">Cutback week — lighter load</span></td>
+          </tr>
+          <tr>
+            <td><strong>Week 5</strong><br><small style="color:var(--text-secondary);">29 Jun–5 Jul</small></td>
+            <td>—</td><td>—</td>
+            <td style="color:var(--text-tertiary);font-style:italic;">No match this week</td><td>—</td>
+            <td><span class="pill-bye">Bye</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 29 Jun ✓<br><span class="imp-note">Saturday free — extra rest or easy walk</span></td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 6 ⚠️</strong><br><small style="color:var(--text-secondary);">6–12 Jul</small></td>
+            <td>Rd 12</td><td><strong>Sun 12 Jul, 12:30</strong></td>
+            <td>Doncaster vs <strong>Hawthorn</strong> (away)</td><td>Doncaster HC</td>
+            <td><span class="pill-sun">Sunday</span></td>
+            <td style="font-size:12px;"><strong style="color:var(--amber-dark);">Long run shifts to Wednesday 8 Jul</strong><br><span class="imp-note">Mon: rest. Wed: long run. Fri: strength. Sun: match</span></td>
+          </tr>
+          <tr>
+            <td><strong>Week 7</strong><br><small style="color:var(--text-secondary);">13–19 Jul</small></td>
+            <td>Rd 13</td><td>Sat 18 Jul, 14:00</td>
+            <td><strong>Hawthorn</strong> vs Essendon (home)</td><td>Hawthorn Malvern HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 13 Jul ✓<br><span class="imp-note">Cutback week — lighter load</span></td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 8</strong><br><small style="color:var(--text-secondary);">20–26 Jul</small></td>
+            <td>Rd 14</td><td>Sat 25 Jul, 12:30</td>
+            <td>Camberwell vs <strong>Hawthorn</strong> (away)</td><td>Camberwell HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 20 Jul ✓</td>
+          </tr>
+          <tr>
+            <td><strong>Week 9</strong><br><small style="color:var(--text-secondary);">27 Jul–2 Aug</small></td>
+            <td>Rd 15</td><td>Sat 1 Aug, 12:30</td>
+            <td><strong>Hawthorn</strong> vs Southern United (home)</td><td>Hawthorn Malvern HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 27 Jul ✓<br><span class="imp-note">Last week of Phase 1 — 2 runs only</span></td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 10</strong><br><small style="color:var(--text-secondary);">3–9 Aug</small></td>
+            <td>Rd 16</td><td>Sat 8 Aug, 12:30</td>
+            <td>Bayside PH vs <strong>Hawthorn</strong> (away)</td><td>Albert Park</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 3 Aug ✓<br><span class="imp-note">Phase 2 begins — Friday easy run added</span></td>
+          </tr>
+          <tr>
+            <td><strong>Week 11</strong><br><small style="color:var(--text-secondary);">10–16 Aug</small></td>
+            <td>Rd 17</td><td>Sat 15 Aug, 14:00</td>
+            <td><strong>Hawthorn</strong> vs Altona (home)</td><td>Hawthorn Malvern HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 10 Aug ✓</td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 12</strong><br><small style="color:var(--text-secondary);">17–23 Aug</small></td>
+            <td>Rd 18</td><td>Sat 22 Aug, 17:00</td>
+            <td>Footscray vs <strong>Hawthorn</strong> (away)</td><td>Footscray HC</td>
+            <td><span class="pill-sat">Saturday</span></td>
+            <td style="font-size:12px;">Standard — long run Monday 17 Aug ✓<br><span class="imp-note">Last home & away round</span></td>
+          </tr>
+          <tr>
+            <td><strong>Week 13</strong><br><small style="color:var(--text-secondary);">24–30 Aug</small></td>
+            <td>Finals QF</td><td>~Sat 29 Aug (TBC)</td>
+            <td><strong>Hawthorn</strong> — qualifying final</td><td>TBC</td>
+            <td><span class="pill-fin">Finals</span></td>
+            <td style="font-size:12px;">Quality run scaled back — high-stakes match</td>
+          </tr>
+          <tr style="background:var(--bg-secondary);">
+            <td><strong>Week 14</strong><br><small style="color:var(--text-secondary);">31 Aug–6 Sep</small></td>
+            <td>Finals SF</td><td>~Sat 5 Sep (TBC)</td>
+            <td><strong>Hawthorn</strong> — semi-final</td><td>TBC</td>
+            <td><span class="pill-fin">Finals</span></td>
+            <td style="font-size:12px;">Maintain Monday long run; reduce mid-week</td>
+          </tr>
+          <tr>
+            <td><strong>Week 15</strong><br><small style="color:var(--text-secondary);">7–13 Sep</small></td>
+            <td>Finals GF</td><td>~Sat 12 Sep (TBC)</td>
+            <td><strong>Hawthorn</strong> — grand final 🎉</td><td>TBC</td>
+            <td><span class="pill-fin">Finals</span></td>
+            <td style="font-size:12px;">Last hockey match — taper begins after</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warning-box">
+      <p><strong>Week 6 — Sunday game (Sun 12 Jul, Doncaster away):</strong> Running a long effort on Monday morning after a Sunday away match at Doncaster is too much to ask of the legs. That week only, the long run moves to <strong>Wednesday 8 Jul</strong>, and strength shifts to <strong>Friday</strong>. Monday becomes a full rest day. Friday run club is skipped that week — the legs need it after the Sunday match.</p>
+    </div>
+    <div class="highlight-box" style="margin-top:1rem;">
+      <p><strong>Bye weeks (Wk 1 — 1–7 Jun, and Wk 5 — 29 Jun–5 Jul):</strong> No match either week. Training runs as normal on Monday and Wednesday. Saturday is free — use it for an easy walk or extra rest, not an extra run.</p>
+    </div>
+  </div>
+
+  <!-- ===================== STRENGTH ===================== -->
+  <div id="tab-strength" class="panel">
+    <div class="section-title">Wednesday strength session (40 min)</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1.25rem;">In Phase 1, this is followed by a short easy run of 4–5 km. In Phase 2, strength and the quality run become separate: strength first, then quality after a rest or the next day if needed. Focus areas are identical to a hybrid 10k/hockey athlete: single-leg stability, posterior chain, calf resilience, and core.</p>
+    <div class="grid-auto">
+      <div class="scard"><div class="s-cat">🦵 Single-leg strength</div><ul><li>Bulgarian split squat — 3 × 8–10/side</li><li>Single-leg Romanian deadlift — 3 × 8/side</li><li>Step-up with knee drive — 3 × 10/side</li><li>Lateral lunge — 3 × 10/side (hockey-specific)</li></ul></div>
+      <div class="scard"><div class="s-cat">🔗 Posterior chain</div><ul><li>Hip thrust / barbell glute bridge — 3 × 12</li><li>Nordic hamstring curl — 3 × 5–8</li><li>Single-leg Romanian deadlift — 3 × 8/side</li><li>Cable pull-through — 3 × 12</li></ul></div>
+      <div class="scard"><div class="s-cat">🦶 Calf resilience</div><ul><li>Single-leg eccentric calf raise — 3 × 15/side</li><li>Tibialis anterior raise — 3 × 15</li><li>Pogo hops — 3 × 20 (build to single-leg)</li><li>Banded ankle stability work — 2 × 15/side</li></ul></div>
+      <div class="scard"><div class="s-cat">🏋️ Core stability</div><ul><li>Dead bug — 3 × 10/side</li><li>Copenhagen plank — 3 × 20–30 s/side</li><li>Single-leg glute bridge — 3 × 12/side</li><li>Pallof press — 3 × 10/side</li></ul></div>
+      <div class="scard"><div class="s-cat">📈 Progression by phase</div><ul><li><strong>Weeks 1–5:</strong> Learn movements, bodyweight/light load</li><li><strong>Weeks 6–9:</strong> Add load, build strength base</li><li><strong>Weeks 10–15:</strong> Maintain — don't peak strength here</li><li><strong>Weeks 16–19:</strong> Reduce to 2–3 key exercises only</li></ul></div>
+      <div class="scard"><div class="s-cat">⚡ Hockey & 10k synergy</div><ul><li>Nordic curls: protect hamstrings from sprint demands</li><li>Lateral lunges: mirror hockey movement patterns</li><li>Copenhagen planks: protect adductors (hockey-specific)</li><li>Calf eccentrics: protect achilles during speed work</li></ul></div>
+    </div>
+  </div>
+
+  <!-- ===================== ANNA'S NOTES ===================== -->
+  <div id="tab-notes" class="panel">
+    <div class="note-section">
+      <div class="note-section-title">💧 Fueling for 10k training</div>
+      <div class="grid-2">
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>During training runs</div><ul><li>Runs under 60 min — water only, no gels needed</li><li>Long runs over 8 km — sip water every 15–20 min</li><li>For 10k racing, gels aren't required — nail your pre-race meal instead</li><li>Stay well hydrated on hockey days — this affects Monday run quality</li><li>Avoid heavy meals the evening before Monday long runs</li></ul></div>
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Race day fueling</div><ul><li>Pre-race meal: 2–3 hrs before, familiar carb-rich food</li><li>Small snack 60–90 min before if hungry (banana, toast)</li><li>No gels needed during a 10k at this pace — one gel if you feel you need it at 5 km</li><li>Sip water at the aid station if you pass one</li><li>Melbourne October avg: 13–18°C — ideal racing conditions</li></ul></div>
+      </div>
+    </div>
+    <div class="note-section">
+      <div class="note-section-title">🛌 Recovery</div>
+      <div class="grid-2">
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Weekly habits</div><ul><li>Friday and Sunday are full rest days — protect them</li><li>Post-hockey: protein + carbs within 30 min of the final whistle</li><li>Post-long run Monday: prioritise nutrition and sleep that night</li><li>7–9 hrs sleep per night — especially before Monday runs</li><li>5 min daily foam roll: calves, hamstrings, glutes, hip flexors</li></ul></div>
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Warning signs — reduce load</div><ul><li>Persistent soreness in calves, shins, or achilles — rest immediately</li><li>Monday runs feeling harder each week without improving — flag it</li><li>Resting HR elevated more than 5 bpm above normal</li><li>Dreading sessions rather than looking forward to them</li><li>Any sharp or localised pain: rest, assess, then decide</li></ul></div>
+      </div>
+    </div>
+    <div class="note-section">
+      <div class="note-section-title">🏁 Race strategy — running sub-40:00</div>
+      <div class="grid-2">
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Pacing plan</div><ul><li>Target: even pace at 3:58–4:00/km from the gun</li><li>km 1: start controlled — the field goes out fast, don't chase it</li><li>km 2–7: locked into goal pace, focused and relaxed</li><li>km 7–9: if you feel good, start building — this is where the race is won</li><li>km 9–10: everything you have left — empty the tank</li><li>A 39:50 finish needs 3:59/km average — very achievable with this training</li></ul></div>
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Mental strategy</div><ul><li>Split the race: 5 km + 5 km. Hit 5 km around 19:55–20:00</li><li>Hockey taught you to compete and push when it's uncomfortable — use that</li><li>Don't start your watch stressing — run to feel in km 1, then settle</li><li>Focus on form: tall posture, relaxed hands, quick cadence</li><li>Prepare a cue word or phrase for km 7 when it gets hard</li><li>You've done the training. Trust it.</li></ul></div>
+      </div>
+    </div>
+    <div class="note-section">
+      <div class="note-section-title">👟 Gear & logistics</div>
+      <div class="grid-2">
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Shoes</div><ul><li>Race in the same shoes you've trained in — no surprises</li><li>If buying race shoes, start wearing them from week 12 at the latest</li><li>At least 40–60 km on race shoes before October</li><li>Wear race-day socks in training too</li></ul></div>
+        <div class="note-card"><div class="note-card-title"><span class="dot"></span>Race day checklist</div><ul><li>Warm up properly — 10–15 min easy jog + strides before the start</li><li>Vaseline or Body Glide if anything rubs</li><li>Arrive at the event 60–75 min before your wave</li><li>The 10k is a fast event — a good warm-up makes a real difference to how km 1 feels</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const weeks = [
+  // ── Phase 1: Base (Weeks 1–9, 1 Jun – 2 Aug) ──────────────────────────
+  { n:1, dates:'1–7 Jun', phase:'base', label:'Phase 1 — Aerobic Foundation · 2 runs/week (Weeks 1–9)',
+    mon:'Long run — 6 km\n@ 4:50–5:15/km\nAll easy, build habits',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 4 km\n@ 5:10–5:30/km',
+    sat:'🟢 BYE WEEK\nNo match\nExtra rest',
+    sun:'Rest',
+    km:10 },
+
+  { n:2, dates:'8–14 Jun', phase:'base', label:null,
+    mon:'Long run — 7 km\n@ 4:50–5:15/km',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 4 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 9 — HOME\nHawthorn vs MCC\nSat 13 Jun, 14:00',
+    sun:'Rest',
+    km:11 },
+
+  { n:3, dates:'15–21 Jun', phase:'base', label:null,
+    mon:'Long run — 8 km\n@ 4:50–5:15/km',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 4 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 10 — AWAY\nGreensborough vs Hawthorn\nSat 20 Jun, 17:00',
+    sun:'Rest',
+    km:12 },
+
+  { n:4, dates:'22–28 Jun', phase:'base', label:null,
+    mon:'Long run — 6 km\n@ 4:50–5:15/km\nCUTBACK week',
+    tue:'Hockey training',
+    wed:'Strength 35 min (reduced)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 3 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 11 — HOME\nHawthorn vs Mentone\nSat 27 Jun, 17:00',
+    sun:'Rest',
+    km:9 },
+
+  { n:5, dates:'29 Jun–5 Jul', phase:'base', label:null,
+    mon:'Long run — 9 km\n@ 4:50–5:15/km',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 4 km\n@ 5:10–5:30/km',
+    sat:'🟢 BYE WEEK\nNo match\nExtra rest',
+    sun:'Rest',
+    km:13 },
+
+  // WEEK 6 — Sunday game: long run moves to Wednesday, strength to Friday, run club skipped
+  { n:6, dates:'6–12 Jul', phase:'base', label:null,
+    mon:'Rest\n⚠️ Match is Sunday\nExtra recovery day',
+    tue:'Hockey training',
+    wed:'⚠️ LONG RUN — 9 km\n@ 4:50–5:15/km\nShifted: match is Sunday',
+    thu:'Hockey training',
+    fri:'Strength 40 min\n(shifted — run club skipped\nthis week)',
+    sat:'Rest',
+    sun:'🏑 Rd 12 — AWAY\nDoncaster vs Hawthorn\nSun 12 Jul, 12:30',
+    km:9 },
+
+  { n:7, dates:'13–19 Jul', phase:'base', label:null,
+    mon:'Long run — 7 km\n@ 4:50–5:15/km\nCUTBACK week',
+    tue:'Hockey training',
+    wed:'Strength 35 min (reduced)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 3 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 13 — HOME\nHawthorn vs Essendon\nSat 18 Jul, 14:00',
+    sun:'Rest',
+    km:10 },
+
+  { n:8, dates:'20–26 Jul', phase:'base', label:null,
+    mon:'Long run — 10 km\n@ 4:50–5:15/km',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 4 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 14 — AWAY\nCamberwell vs Hawthorn\nSat 25 Jul, 12:30',
+    sun:'Rest',
+    km:14 },
+
+  { n:9, dates:'27 Jul–2 Aug', phase:'base', label:null,
+    mon:'Long run — 10 km\n@ 4:50–5:15/km',
+    tue:'Hockey training',
+    wed:'Strength 40 min\n(no run today)',
+    thu:'Hockey training',
+    fri:'🟢 Run club\nEasy 5 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 15 — HOME\nHawthorn vs Southern United\nSat 1 Aug, 12:30',
+    sun:'Rest',
+    km:15 },
+
+  // ── Phase 2: Build (Weeks 10–16, 3 Aug – 14 Sep) ──────────────────────
+  { n:10, dates:'3–9 Aug', phase:'build', label:'Phase 2 — 10k Specific Training · 3 runs/week (Weeks 10–16)',
+    mon:'Long run — 10 km\n@ 4:45–5:05/km\n+ 2 km @ race pace finish',
+    tue:'Hockey training',
+    wed:'Quality run — 10 km total\n2 km easy\n3 × 2 km @ tempo (4:10–4:20/km)\n90 s recovery jog\n2 km easy',
+    thu:'Hockey training',
+    fri:'Easy run — 4 km\n@ 5:10–5:30/km\n3rd run introduced',
+    sat:'🏑 Rd 16 — AWAY\nBayside PH vs Hawthorn\nSat 8 Aug, 12:30',
+    sun:'Rest',
+    km:26 },
+
+  { n:11, dates:'10–16 Aug', phase:'build', label:null,
+    mon:'Long run — 11 km\n@ 4:45–5:05/km',
+    tue:'Hockey training',
+    wed:'Quality run — 10 km total\n2 km easy\n4 × 1.5 km @ 4:10/km\n90 s recovery\n2 km easy',
+    thu:'Hockey training',
+    fri:'Easy run — 4 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 17 — HOME\nHawthorn vs Altona\nSat 15 Aug, 14:00',
+    sun:'Rest',
+    km:27 },
+
+  { n:12, dates:'17–23 Aug', phase:'build', label:null,
+    mon:'Long run — 12 km\n@ 4:45–5:05/km\n10 km easy +\n2 km @ race pace (4:00/km)',
+    tue:'Hockey training',
+    wed:'Quality run — 11 km total\n2 km easy\n5 × 1 km @ race pace (4:00/km)\n2 min recovery\n2 km easy',
+    thu:'Hockey training',
+    fri:'Easy run — 5 km\n@ 5:10–5:30/km',
+    sat:'🏑 Rd 18 — AWAY\nFootscray vs Hawthorn\nSat 22 Aug, 17:00',
+    sun:'Rest',
+    km:30 },
+
+  { n:13, dates:'24–30 Aug', phase:'build', label:null,
+    mon:'Long run — 10 km\n@ 4:50–5:05/km\nFinalsweek — conserve',
+    tue:'Hockey training',
+    wed:'Easy run — 5 km\n@ 5:10–5:30/km\n⚠️ Finals prep — keep it easy',
+    thu:'Hockey training',
+    fri:'Easy run — 4 km\n@ 5:20/km (very easy)',
+    sat:'🏒 FINALS — QF\n~Sat 29 Aug (TBC)',
+    sun:'Rest',
+    km:19 },
+
+  { n:14, dates:'31 Aug–6 Sep', phase:'build', label:null,
+    mon:'Long run — 10 km\n@ 4:50–5:05/km',
+    tue:'Hockey training',
+    wed:'Easy run — 5 km\n@ 5:10–5:20/km\nSemi-final prep',
+    thu:'Hockey training',
+    fri:'Easy run — 4 km\n@ 5:20/km',
+    sat:'🏒 FINALS — SF\n~Sat 5 Sep (TBC)',
+    sun:'Rest',
+    km:19 },
+
+  { n:15, dates:'7–13 Sep', phase:'build', label:null,
+    mon:'Long run — 10 km\n@ 4:50–5:05/km',
+    tue:'Hockey training',
+    wed:'Quality run — 8 km total\n2 km easy\n3 × 1 km @ race pace\n2 min recovery\n1 km easy',
+    thu:'Hockey training',
+    fri:'Easy run — 4 km\n@ 5:10–5:20/km',
+    sat:'🏒 FINALS — GF\n~Sat 12 Sep (TBC)\n🎉 Last hockey match!',
+    sun:'Rest',
+    km:22 },
+
+  { n:16, dates:'14–20 Sep', phase:'build', label:null,
+    mon:'Long run — 10 km\n@ 4:45–5:00/km\n8 km easy +\n2 km @ race pace',
+    tue:'Easy run — 5 km\n@ 5:10/km\n(hockey slot now free)',
+    wed:'Quality run — 9 km total\n2 km easy\n4 × 1 km @ 3:58–4:00/km\n2 min recovery\n1 km easy',
+    thu:'Easy run 4 km\n@ 5:15/km',
+    fri:'Strength 30 min\nKey exercises only',
+    sat:'Easy run 5 km\n@ 5:10/km',
+    sun:'Rest',
+    km:27 },
+
+  // ── Phase 3: Taper (Weeks 17–19) ──────────────────────────────────────
+  { n:17, dates:'21–27 Sep', phase:'taper', label:'Phase 3 — Taper (Weeks 17–19)',
+    mon:'Long run — 8 km\n@ 4:50–5:05/km',
+    tue:'Easy run — 4 km\n@ 5:10–5:20/km',
+    wed:'Quality run — 7 km total\n2 km easy\n3 × 1 km @ race pace (4:00/km)\n90 s recovery\n1 km easy',
+    thu:'Rest',
+    fri:'Easy run — 3 km\n@ 5:15/km',
+    sat:'Rest',
+    sun:'Rest',
+    km:18 },
+
+  { n:18, dates:'28 Sep–4 Oct', phase:'taper', label:null,
+    mon:'Easy run — 6 km\n@ 5:00–5:10/km\n3 × 20 s strides at end',
+    tue:'Rest',
+    wed:'Race-pace sharpener — 5 km\n1.5 km easy\n2 × 1 km @ race pace\n90 s recovery\n0.5 km easy',
+    thu:'Easy run — 3 km\n@ 5:15/km',
+    fri:'Rest',
+    sat:'Easy run — 3 km\n@ 5:15/km',
+    sun:'Rest',
+    km:13 },
+
+  { n:19, dates:'5–11 Oct', phase:'taper', label:null,
+    mon:'Easy run — 3 km\n@ 5:00/km\n4 × 20 s strides',
+    tue:'Rest',
+    wed:'Easy run — 2 km\n4 × 20 s strides @ race pace feel',
+    thu:'Rest\nGear check, race prep',
+    fri:'Shake-out 2 km\nVery easy — wake the legs',
+    sat:'Rest\nCarb-load, hydrate, sleep early',
+    sun:'🏁 RACE DAY\nNike Melbourne Marathon 10k\nTarget: sub 40:00\nYou\'ve done the work.\nRun free.',
+    km:'7 + 10' },
+];
+
+const phaseColors = { base:'#1D9E75', build:'#185FA5', taper:'#993C1D' };
+const phaseShown = {};
+
+function cellClass(content, col) {
+  if (!content) return '';
+  const c = content.toLowerCase();
+  if (col === 'sun' && c.includes('race day')) return 'cx';
+  if ((col === 'mon' || col === 'wed') && (c.includes('long run') || c.includes('⚠️ long'))) return 'cl';
+  if ((col === 'wed' || col === 'mon') && (c.includes('quality') || c.includes('race-pace') || c.includes('sharpener'))) return 'cq';
+  if (col === 'wed' && c.includes('strength')) return 'cs';
+  if (col === 'fri' && c.includes('run club')) return 'ce';
+  if (col === 'fri' && c.includes('strength')) return 'cs';
+  if ((col === 'tue' || col === 'thu') && c.includes('hockey')) return 'ch';
+  if ((col === 'sat') && (c.includes('🏑') || c.includes('🏒') || c.includes('hockey'))) return 'ch';
+  if (col === 'fri' && c.includes('rest') && !c.includes('strength')) return 'cr';
+  if (col === 'sun' && c.includes('rest')) return 'cr';
+  if (col === 'mon' && c.includes('rest')) return 'cr';
+  if (col === 'thu' && c.includes('rest')) return 'cr';
+  if (col === 'sat' && c.includes('rest')) return 'cr';
+  if (col === 'sat' && c.includes('bye')) return 'ce';
+  if (c.includes('easy run') || c.includes('easy 4') || c.includes('easy 5') || c.includes('easy 3') || c.includes('shake-out') || (c.includes('easy') && col === 'wed' && !c.includes('strength'))) return 'ce';
+  return '';
+}
+
+const cols = ['mon','tue','wed','thu','fri','sat','sun'];
+const body = document.getElementById('schedBody');
+
+weeks.forEach(w => {
+  if (w.label && !phaseShown[w.phase]) {
+    phaseShown[w.phase] = true;
+    const hdr = document.createElement('tr');
+    hdr.className = 'phase-row';
+    hdr.innerHTML = `<td colspan="9">${w.label}</td>`;
+    body.appendChild(hdr);
+  }
+  const tr = document.createElement('tr');
+  const pc = phaseColors[w.phase] || '#888';
+  tr.innerHTML = `
+    <td class="week-cell" style="border-left:3px solid ${pc};padding-left:9px;">
+      <div>Wk ${w.n}</div>
+      <div class="week-date">${w.dates}</div>
+    </td>
+    ${cols.map(c => {
+      const cls = cellClass(w[c]||'', c);
+      const txt = (w[c]||'').replace(/\n/g,'<br>');
+      return `<td class="${cls}">${txt||'—'}</td>`;
+    }).join('')}
+    <td class="km-cell">${w.km} km</td>
+  `;
+  body.appendChild(tr);
+});
+
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
